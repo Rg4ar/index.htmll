@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Para Crismeilin</title>
+<style>
+*,*::before,*::after{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+
+body{
+  background:#0a0406;
+  font-family:Georgia,'Times New Roman',serif;
+  min-height:100vh;
+  display:-webkit-box;display:-webkit-flex;display:flex;
+  -webkit-box-align:center;-webkit-align-items:center;align-items:center;
+  -webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;
+  padding:20px 16px;
+  overflow-x:hidden;
+}
+
+/* Fondo degradado oscuro rojizo */
+.bg{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 20% 10%, #2a0810 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 80%, #180610 0%, transparent 50%),
+    #0a0406;
+}
+
+/* Estrellas */
+.star{position:fixed;border-radius:50%;background:#fff;pointer-events:none;z-index:1;
+  -webkit-animation:twinkle ease-in-out infinite;animation:twinkle ease-in-out infinite;}
+@-webkit-keyframes twinkle{0%,100%{opacity:.05;}50%{opacity:.85;}}
+@keyframes twinkle{0%,100%{opacity:.05;}50%{opacity:.85;}}
+
+/* Flecha Sagitario animada */
+.arrow-bg{
+  position:fixed;top:8vh;left:5vw;z-index:1;
+  font-size:2.2rem;opacity:.07;
+  -webkit-animation:arrowFloat 6s ease-in-out infinite;animation:arrowFloat 6s ease-in-out infinite;
+  pointer-events:none;
+}
+@-webkit-keyframes arrowFloat{
+  0%,100%{-webkit-transform:translate(0,0) rotate(-30deg);}
+  50%{-webkit-transform:translate(8px,-12px) rotate(-25deg);}
+}
+@keyframes arrowFloat{
+  0%,100%{transform:translate(0,0) rotate(-30deg);}
+  50%{transform:translate(8px,-12px) rotate(-25deg);}
+}
+
+/* Pétalos rosas */
+.petals{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden;}
+.petal{
+  position:absolute;top:-16px;border-radius:50% 0 50% 50%;
+  -webkit-animation:pFall linear infinite;animation:pFall linear infinite;
+}
+@-webkit-keyframes pFall{
+  0%  {-webkit-transform:translateY(0) rotate(0deg) translateX(0);opacity:.85;}
+  45% {-webkit-transform:translateY(45vh) rotate(180deg) translateX(14px);opacity:.6;}
+  100%{-webkit-transform:translateY(108vh) rotate(350deg) translateX(-10px);opacity:0;}
+}
+@keyframes pFall{
+  0%  {transform:translateY(0) rotate(0deg) translateX(0);opacity:.85;}
+  45% {transform:translateY(45vh) rotate(180deg) translateX(14px);opacity:.6;}
+  100%{transform:translateY(108vh) rotate(350deg) translateX(-10px);opacity:0;}
+}
+
+/* ── Card ── */
+.card{position:relative;z-index:10;width:100%;max-width:385px;opacity:0;}
+
+.paper{
+  background:linear-gradient(160deg,#100608 0%,#160a0c 45%,#0e0508 100%);
+  border:1px solid rgba(180,40,60,.25);
+  border-radius:3px 18px 18px 18px;
+  padding:28px 22px 26px;
+  position:relative;overflow:hidden;
+  -webkit-box-shadow:
+    0 0 0 1px rgba(180,40,60,.1),
+    0 0 50px rgba(160,20,40,.12),
+    0 16px 50px rgba(0,0,0,.7);
+  box-shadow:
+    0 0 0 1px rgba(180,40,60,.1),
+    0 0 50px rgba(160,20,40,.12),
+    0 16px 50px rgba(0,0,0,.7);
+}
+
+/* Doblez esquina */
+.paper::before{
+  content:'';position:absolute;top:0;left:0;width:0;height:0;
+  border-style:solid;border-width:26px 26px 0 0;
+  border-color:rgba(180,40,60,.4) transparent transparent transparent;z-index:3;
+}
+
+/* Líneas tenues */
+.paper::after{
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+  background-image:repeating-linear-gradient(180deg,transparent,transparent 32px,rgba(180,40,60,.04) 32px,rgba(180,40,60,.04) 33px);
+  pointer-events:none;z-index:0;
+}
+
+.inner{position:relative;z-index:2;}
+
+/* Header */
+.hdr{text-align:center;margin-bottom:20px;opacity:0;}
+.hdr-icon{font-size:2rem;display:block;margin-bottom:5px;
+  -webkit-animation:iconFloat 3.5s ease-in-out infinite;animation:iconFloat 3.5s ease-in-out infinite;}
+@-webkit-keyframes iconFloat{0%,100%{-webkit-transform:translateY(0);}50%{-webkit-transform:translateY(-7px);}}
+@keyframes iconFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.hdr-sub{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(220,150,160,.5);}
+
+/* Divisor */
+.dv{
+  display:-webkit-box;display:-webkit-flex;display:flex;
+  -webkit-box-align:center;-webkit-align-items:center;align-items:center;
+  gap:7px;margin:14px 0;opacity:0;-webkit-transition:opacity .6s;transition:opacity .6s;
+}
+.dv.show{opacity:1;}
+.dl{-webkit-box-flex:1;-webkit-flex:1;flex:1;height:1px;
+  background:-webkit-linear-gradient(left,transparent,rgba(160,40,60,.5));
+  background:linear-gradient(to right,transparent,rgba(160,40,60,.5));}
+.dl.r{
+  background:-webkit-linear-gradient(right,transparent,rgba(160,40,60,.5));
+  background:linear-gradient(to left,transparent,rgba(160,40,60,.5));}
+.dc{font-size:.72rem;color:rgba(220,120,140,.55);letter-spacing:.1em;}
+
+/* Nombre */
+.name-block{text-align:center;margin-bottom:20px;opacity:0;}
+.para-label{font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;
+  color:rgba(220,150,160,.55);display:block;margin-bottom:4px;}
+.name{
+  font-size:1.85rem;font-style:italic;font-weight:bold;
+  background:-webkit-linear-gradient(135deg,#c0394a,#e8607a,#ff9aaa);
+  background:linear-gradient(135deg,#c0394a,#e8607a,#ff9aaa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:.03em;display:block;
+}
+
+/* Sagitario badge */
+.badge-row{
+  display:-webkit-box;display:-webkit-flex;display:flex;
+  -webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;
+  gap:8px;margin-bottom:18px;opacity:0;-webkit-transition:opacity .5s;transition:opacity .5s;
+}
+.badge-row.show{opacity:1;}
+.badge{
+  padding:4px 12px;border-radius:20px;font-size:.68rem;
+  letter-spacing:.08em;display:-webkit-box;display:-webkit-flex;display:flex;
+  -webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:4px;
+}
+.b-sag{background:rgba(160,30,50,.25);border:1px solid rgba(200,60,80,.3);color:#e89090;}
+.b-nov{background:rgba(30,30,80,.3);border:1px solid rgba(80,80,180,.3);color:#9090d8;}
+.b-bi {background:rgba(20,70,20,.25);border:1px solid rgba(60,160,60,.25);color:#80c080;}
+
+/* Saludo */
+.sal{font-size:.82rem;color:rgba(220,160,160,.75);font-style:italic;margin-bottom:14px;opacity:0;}
+
+/* Cuerpo */
+.body{font-size:.91rem;color:#d8c8c8;line-height:1.9;opacity:0;}
+.body p{margin-bottom:15px;}
+.body p:last-child{margin-bottom:0;}
+.hl {color:#e8607a;font-style:italic;}
+.hl2{color:#ff9aaa;font-weight:bold;}
+.hl3{color:#9090d8;font-style:italic;}
+
+/* Tags de gustos */
+.tags{
+  display:-webkit-box;display:-webkit-flex;display:flex;
+  -webkit-flex-wrap:wrap;flex-wrap:wrap;
+  gap:6px;margin:16px 0;opacity:0;-webkit-transition:opacity .6s;transition:opacity .6s;
+}
+.tags.show{opacity:1;}
+.tag{
+  padding:4px 11px;border-radius:20px;font-size:.7rem;
+  border:1px solid rgba(200,60,80,.25);
+  color:rgba(220,160,170,.8);
+  background:rgba(160,20,40,.12);
+  font-style:italic;
+}
+
+/* Firma */
+.sig{margin-top:20px;text-align:right;opacity:0;-webkit-transition:opacity .7s;transition:opacity .7s;}
+.sig.show{opacity:1;}
+.sig-closing{font-size:.78rem;color:rgba(220,150,160,.6);font-style:italic;margin-bottom:4px;}
+.sig-name{
+  font-size:1.35rem;font-style:italic;font-weight:bold;
+  background:-webkit-linear-gradient(135deg,#c0394a,#e8607a);
+  background:linear-gradient(135deg,#c0394a,#e8607a);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.sig-sub{font-size:.74rem;color:rgba(220,150,160,.55);font-style:italic;margin-top:5px;display:block;}
+
+/* PD */
+.pd{
+  margin-top:16px;padding:11px 14px;
+  background:rgba(160,20,40,.08);
+  border-left:2px solid rgba(180,40,60,.3);
+  border-radius:0 7px 7px 0;
+  opacity:0;-webkit-transition:opacity .7s;transition:opacity .7s;
+}
+.pd.show{opacity:1;}
+.pd-label{font-size:.66rem;color:rgba(220,150,160,.55);letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px;}
+.pd-text{font-size:.82rem;color:rgba(210,180,180,.8);font-style:italic;line-height:1.65;}
+
+/* Cursor */
+.cursor{display:inline-block;width:2px;height:.82em;background:#d8c8c8;
+  vertical-align:text-bottom;margin-left:1px;
+  -webkit-animation:blink .65s step-end infinite;animation:blink .65s step-end infinite;}
+@-webkit-keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="arrow-bg">♐</div>
+<div class="petals" id="petals"></div>
+
+<div class="card" id="card">
+<div class="paper">
+<div class="inner">
+
+  <div class="hdr" id="hdr">
+    <span class="hdr-icon">🌹</span>
+  </div>
+
+  <div class="dv" id="d1"><div class="dl"></div><span class="dc">✦ ❤️ ✦</span><div class="dl r"></div></div>
+
+  <div class="name-block" id="nb">
+    <span class="para-label">Para</span>
+    <span class="name">Crismeirin</span>
+  </div>
+
+
+
+  <p class="sal" id="sal"></p>
+
+  <div class="body" id="body"></div>
+
+
+
+  <div class="dv" id="d2"><div class="dl"></div><span class="dc">✦ 🌹 ✦</span><div class="dl r"></div></div>
+
+  <div class="sig" id="sig">
+    <p class="sig-closing">Con toda la sinceridad del mundo,</p>
+    <p class="sig-name">Alber</p>
+
+  </div>
+
+  <div class="pd" id="pd">
+    <p class="pd-label">P.D.</p>
+    <p class="pd-text">Sí, esto lo escribí pensando en ti. Y no me arrepiento ni un poco. 🏹</p>
+  </div>
+
+</div>
+</div>
+</div>
+
+<script>
+var rAF=window.requestAnimationFrame||window.webkitRequestAnimationFrame||function(f){setTimeout(f,16);};
+function $(id){return document.getElementById(id);}
+function wait(fn,ms){setTimeout(fn,ms||0);}
+function easeOut(t){return 1-Math.pow(1-t,3);}
+function easeSoft(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
+
+function anim(from,to,dur,ease,cb,end){
+  var s=null;
+  function step(ts){
+    if(!s)s=ts;
+    var p=Math.min((ts-s)/dur,1);
+    cb(from+(to-from)*ease(p));
+    if(p<1){rAF(step);}else{if(end)end();}
+  }
+  rAF(step);
+}
+
+/* Estrellas */
+(function(){
+  for(var i=0;i<55;i++){
+    var s=document.createElement('div'),sz=.6+Math.random()*2;
+    s.className='star';
+    s.style.left=(Math.random()*100)+'vw';
+    s.style.top=(Math.random()*100)+'vh';
+    s.style.width=sz+'px';s.style.height=sz+'px';
+    var d=(2+Math.random()*5)+'s',dl=(Math.random()*7)+'s';
+    s.style.animationDuration=d;s.style.webkitAnimationDuration=d;
+    s.style.animationDelay=dl;s.style.webkitAnimationDelay=dl;
+    document.body.appendChild(s);
+  }
+})();
+
+/* Pétalos */
+(function(){
+  var c=$('petals');
+  var cols=['#c0394a','#ffb0c0','#ff9aaa','#e8607a','#ffd0d8'];
+  for(var i=0;i<14;i++){
+    var p=document.createElement('div'),s=5+Math.random()*7;
+    p.className='petal';
+    p.style.left=(Math.random()*100)+'vw';
+    p.style.width=s+'px';p.style.height=s+'px';
+    p.style.background=cols[Math.floor(Math.random()*cols.length)];
+    var d=(9+Math.random()*11)+'s',dl=(Math.random()*15)+'s';
+    p.style.animationDuration=d;p.style.webkitAnimationDuration=d;
+    p.style.animationDelay=dl;p.style.webkitAnimationDelay=dl;
+    c.appendChild(p);
+  }
+})();
+
+/* Typewriter */
+function typewriter(el,text,speed,onDone){
+  el.style.opacity='1';el.innerHTML='';
+  var cur=document.createElement('span');cur.className='cursor';
+  el.appendChild(cur);var i=0;
+  function tick(){
+    if(i<text.length){
+      el.insertBefore(document.createTextNode(text[i]),cur);i++;
+      wait(tick,speed+Math.floor(Math.random()*speed*.4));
+    }else{
+      if(cur.parentNode)cur.parentNode.removeChild(cur);
+      if(onDone)onDone();
+    }
+  }
+  tick();
+}
+
+/* SECUENCIA */
+wait(function(){
+  anim(0,1,700,easeOut,function(v){$('card').style.opacity=v;},function(){
+
+    wait(function(){anim(0,1,550,easeOut,function(v){$('hdr').style.opacity=v;},null);},200);
+    wait(function(){$('d1').className='dv show';},600);
+    wait(function(){
+      anim(0,1,650,easeSoft,function(v){
+        $('nb').style.opacity=v;
+        $('nb').style.webkitTransform='scale('+(0.88+v*.12)+')';
+        $('nb').style.transform='scale('+(0.88+v*.12)+')';
+      },null);
+    },900);
+
+
+    wait(function(){
+      typewriter($('sal'),'Crismeirin,', 55, function(){
+        wait(function(){
+
+          var b=$('body');
+          b.style.opacity='1';
+
+          var paras=[
+            'Hay personas con las que hablas y sientes que el tiempo pasa diferente. Tú eres una de esas personas.',
+            'Hay algo en ti que no es fácil de explicar. La forma en que piensas, cómo te expresas, la curiosidad que tienes por aprender… no es algo que se encuentre fácilmente.',
+            'Me gustas, Crismeilin. Todavía nos estamos conociendo, y precisamente por eso me emociona lo que viene. Cada conversación me dice que quiero saber más de ti.',
+            'No tengo prisa. Solo quería ser honesto contigo, porque creo que lo mereces.'
+          ];
+
+          var pEls=[];
+          paras.forEach(function(txt){
+            var p=document.createElement('p');
+            p.textContent=txt;
+            p.style.opacity='0';
+            p.style.webkitTransition='opacity .75s';
+            p.style.transition='opacity .75s';
+            b.appendChild(p);
+            pEls.push(p);
+          });
+
+          function show(i){
+            if(i>=pEls.length){afterParas();return;}
+            wait(function(){pEls[i].style.opacity='1';show(i+1);},800);
+          }
+          show(0);
+
+        },300);
+      });
+    },1600);
+  });
+},300);
+
+function afterParas(){
+  wait(function(){$('d2').className='dv show';},200);
+  wait(function(){$('sig').className='sig show';},1000);
+  wait(function(){$('pd').className='pd show';},1500);
+}
+</script>
+</body>
+</html>
